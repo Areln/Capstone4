@@ -1,0 +1,48 @@
+﻿@using System.Security.Claims;
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<Tasks>
+
+@{
+    if (SignInManager.IsSignedIn(User))
+    {
+        <h2>Your Tasks</h2>
+        <table class="table">
+            <tr>
+                <th>Task Namee</th>
+                <th>Task Description</th>
+                <th>Task Due Date</th>
+                <th>Task Completed</th>
+                <th>Options</th>
+                <th></th>
+            </tr>
+            @{
+                foreach (Tasks task in Model)
+                {
+                    if (task.UserId == User.FindFirst(ClaimTypes.NameIdentifier).Value)
+                    {
+                        <tr>
+                            <td>@task.TaskName</td>
+                            <td>@task.TaskDesc</td>
+                            <td>@task.TaskDueDate</td>
+                            <td>@task.TaskIsComplete</td>
+                            <td><a href="TestIdentityFramework/ToggleTaskComplete?taskId=@task.TaskId">Toggle Complete</a></td>
+                            <td><a href="TestIdentityFramework/EditTask?taskId=@task.TaskId">Edit Task</a></td>
+                        </tr>
+                    }
+                }
+            }
+        </table>
+
+        <a href="../TestIdentityFramework/AddNewTask">Create New Task</a>
+    }
+    else
+    {
+        <label>Please log in to see tasks</label>
+    }
+}

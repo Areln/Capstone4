@@ -1,0 +1,26 @@
+﻿@using System.Security.Claims;
+@{
+    ViewData["Title"] = "AddNewTask";
+}
+@model Tasks
+<h1>AddNewTask</h1>
+
+<form action="../TestIdentityFramework/AddedNewTask" method="">
+    <ul>
+        <li><input type="text" name="TaskName" placeholder="Task Name" /></li>
+        <li><input type="text" name="TaskDesc" placeholder=" Task Desc" /></li>
+        <li><input type="date" name="TaskDueDate" /></li>
+        <li><label>Is Completed?</label></li>
+        <li>
+            <label>Yes</label>
+            <input type="radio" name="TaskIsComplete" value="true" checked />
+        </li>
+        <li>
+            <label>No</label>
+            <input type="radio" name="TaskIsComplete" value="false" />
+        </li>
+
+        <li><input type="submit" class="btn-primary" value="Submit" /></li>
+    </ul>
+    <input type="hidden" name="UserId" value="@User.FindFirst(ClaimTypes.NameIdentifier).Value" />
+</form>

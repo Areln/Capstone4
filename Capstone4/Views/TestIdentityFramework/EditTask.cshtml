@@ -1,0 +1,54 @@
+﻿@using System.Security.Claims;
+@{
+    ViewData["Title"] = "EditTask";
+}
+@model Tasks
+<h1>EditTask</h1>
+@{
+    if (Model.UserId != User.FindFirst(ClaimTypes.NameIdentifier).Value)
+    {
+        <p>This Task is not linked to your account, therefore you are not allowed to edit it.</p>
+    }
+    else
+    {
+        <form action="../TestIdentityFramework/UpdateTask" method="">
+            <ul>
+                <li><input type="text" name="TaskName" value="@Model.TaskName" /></li>
+                <li><input type="text" name="TaskDesc" value="@Model.TaskDesc" /></li>
+                <li><input type="date" name="TaskDueDate" value="@Model.TaskDueDate.ToString("yyyy-MM-dd")" /></li>
+                <li><label>Is Completed?</label></li>
+                @{
+                    if (Model.TaskIsComplete == true)
+                    {
+                        <li>
+                            <label>Yes</label>
+                            <input type="radio" name="TaskIsComplete" value="true" checked />
+                        </li>
+                        <li>
+                            <label>No</label>
+                            <input type="radio" name="TaskIsComplete" value="false" />
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <label>Yes</label>
+                            <input type="radio" name="TaskIsComplete" value="true" />
+                        </li>
+                        <li>
+                            <label>No</label>
+                            <input type="radio" name="TaskIsComplete" value="false" checked />
+                        </li>
+                    }
+                }
+                <li><input type="submit" class="btn-primary" value="Submit" /></li>
+            </ul>
+            <input type="hidden" name="TaskId" value="@Model.TaskId" />
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+        </form>
+
+        <button asp-controller="TestIdentityFramework" asp-action="../RemoveTask?taskId=@Model.TaskId" class="btn-danger">Delete</button>
+    }
+}
+
+
